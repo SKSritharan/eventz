@@ -21,6 +21,8 @@ class EventFactory extends Factory
             'title' => $this->faker->sentence,
             'image' => $this->faker->imageUrl(),
             'description' => $this->faker->paragraph,
+            'category_id' => \App\Models\Category::factory(),
+            'subcategory_id' => \App\Models\SubCategory::factory(),
             'type' => $this->faker->randomElement(['online', 'offline']),
 //            'online_link' => $this->faker->url, only for online events
 //            'note' => $this->faker->sentence, only for online events
