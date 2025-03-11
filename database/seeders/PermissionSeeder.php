@@ -13,14 +13,15 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = ['admin', 'organizer', 'user'];
+        $roles = ['admin', 'user'];
 
         foreach ($roles as $role) {
             Role::create(['name' => $role]);
         }
 
         $user = User::factory()->create([
-            'name' => 'Admin',
+            'first_name' => 'Admin',
+            'last_name' => '',
             'email' => 'admin@example.com',
         ]);
 
