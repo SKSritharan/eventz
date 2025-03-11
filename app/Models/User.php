@@ -51,6 +51,6 @@ use Illuminate\Notifications\Notifiable;
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return $this->hasRole('admin');
     }
 }
