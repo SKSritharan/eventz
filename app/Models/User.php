@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
- use Filament\Models\Contracts\FilamentUser;
- use Filament\Panel;
- use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+use Filament\Panel;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
- use Illuminate\Database\Eloquent\Relations\HasMany;
- use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
- use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Traits\HasRoles;
 
- class User extends Authenticatable implements MustVerifyEmail, FilamentUser
+class User extends Authenticatable implements MustVerifyEmail, FilamentUser, HasName
 {
     use HasFactory, Notifiable, HasRoles;
 
@@ -60,22 +61,25 @@ use Illuminate\Notifications\Notifiable;
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasRole('admin');
+        return match ($panel->getId()) {
+            'admin' => $this->hasRole('admin'),
+            default => true,
+        };
     }
 
-    public function getFullNameAttribute(): string
+    public function getFilamentName(): string
     {
         return "{$this->first_name} {$this->last_name}";
     }
 
-    public function getProfileImageAttribute(): string
+    public function getFilamentAvatarUrl(): ?string
     {
         return $this->profile_image
             ? asset("storage/{$this->profile_image}")
-            : 'https://ui-avatars.com/api/?name='.urlencode($this->full_name).'&color=7F9CF5&background=EBF4FF';
+            : 'https://ui-avatars.com/api/?name='.urlencode($this->full_name).'&color=7F9CF5&background=EBF4FF';;
     }
 
-    public function organizers():HasMany
+    public function organizers(): HasMany
     {
         return $this->hasMany(Organizer::class);
     }

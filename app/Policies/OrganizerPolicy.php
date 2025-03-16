@@ -13,7 +13,7 @@ class OrganizerPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class OrganizerPolicy
      */
     public function view(User $user, Organizer $organizer): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class OrganizerPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class OrganizerPolicy
      */
     public function update(User $user, Organizer $organizer): bool
     {
-        return false;
+        return $user->hasRole('admin') || $user->id === $organizer->user_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class OrganizerPolicy
      */
     public function delete(User $user, Organizer $organizer): bool
     {
-        return false;
+        return $user->hasRole('admin') || $user->id === $organizer->user_id;
     }
 
     /**

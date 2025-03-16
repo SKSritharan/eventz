@@ -35,4 +35,9 @@ class Organizer extends Model
     {
         return $this->hasMany(Event::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 }

@@ -17,11 +17,10 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2)->default(0);
+            $table->boolean('is_free')->default(true);
             $table->integer('quantity');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->boolean('is_visible')->default(true);
             $table->timestamps();
         });

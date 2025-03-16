@@ -15,18 +15,16 @@ return new class extends Migration
             $table->id();
             $table->foreignId('organizer_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->foreignId('sub_category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('sub_category_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('title');
             $table->string('image');
-            $table->text('description');
-            $table->enum('type', ['online', 'offline']);
+            $table->json('description');
+            $table->boolean('is_online')->default(false);
             $table->string('online_link')->nullable();
-            $table->string('note')->nullable();
+            $table->text('note')->nullable();
             $table->string('location')->nullable();
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->timestamps();
         });
     }

@@ -17,10 +17,14 @@ class Ticket extends Model
         'quantity',
         'start_date',
         'end_date',
-        'start_time',
-        'end_time',
         'description',
+        'is_free',
         'is_visible',
+    ];
+
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
     ];
 
     public function event(): BelongsTo

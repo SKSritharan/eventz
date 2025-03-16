@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,21 +17,41 @@ class EventFactory extends Factory
      */
     public function definition(): array
     {
+        // Determine if the event is online or offline
+        $isOnline = $this->faker->boolean();
+
+        // Initialize the optional fields
+        $onlineLink = null;
+        $note = null;
+        $location = null;
+
+        // Set the optional fields based on the event type
+        if ($isOnline) {
+            $onlineLink = $this->faker->url;
+            $note = $this->faker->sentence;
+        } else {
+            $location = $this->faker->address;
+        }
+
+        // Get a random category and its subcategory
+        $category = Category::inRandomOrder()->first();
+        $subCategory = $category->subcategories()->inRandomOrder()->first();
+
+        $start_date = $this->faker->dateTimeBetween('now', '+1 year');
+
         return [
             'organizer_id' => \App\Models\Organizer::factory(),
+            'category_id' => $category->id,
+            'sub_category_id' => $subCategory ? $subCategory->id : null,
             'title' => $this->faker->sentence,
-            'image' => $this->faker->imageUrl(),
-            'description' => $this->faker->paragraph,
-            'category_id' => \App\Models\Category::factory(),
-            'subcategory_id' => \App\Models\SubCategory::factory(),
-            'type' => $this->faker->randomElement(['online', 'offline']),
-//            'online_link' => $this->faker->url, only for online events
-//            'note' => $this->faker->sentence, only for online events
-//            'location' => $this->faker->address, only for offline events
-            'start_date' => $this->faker->date(),
-            'end_date' => $this->faker->date(),
-            'start_time' => $this->faker->time(),
-            'end_time' => $this->faker->time(),
+            'image' => 'image-1@2x.jpg',
+            'description' => $this->faker->paragraphs(3, true),
+            'is_online' => $isOnline,
+            'online_link' => $onlineLink,
+            'note' => $note,
+            'location' => $location,
+            'start_date' => $start_date,
+            'end_date' => $this->faker->dateTimeBetween($start_date, '+1 year'),
         ];
     }
 }

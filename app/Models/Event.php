@@ -17,15 +17,19 @@ class Event extends Model
         'image',
         'description',
         'category_id',
-        'subcategory_id',
-        'type',
+        'sub_category_id',
+        'is_online',
         'online_link',
         'note',
         'location',
         'start_date',
         'end_date',
-        'start_time',
-        'end_time',
+    ];
+
+    protected $casts = [
+        'description' => 'array',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
     ];
 
     public function organizer(): BelongsTo
